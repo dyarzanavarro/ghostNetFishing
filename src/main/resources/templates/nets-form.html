@@ -1,0 +1,11 @@
+<section th:fragment="section" xmlns:th="http://www.thymeleaf.org" th:replace="layout :: section">
+    <h1>Geisternetz melden</h1>
+    <form th:action="@{/nets}" method="post">
+        <label>Latitude <input name="latitude" type="number" step="0.000001" required></label><br />
+        <label>Longitude <input name="longitude" type="number" step="0.000001" required></label><br />
+        <label>Größe (Text) <input name="sizeEstimate" required></label><br />
+        <label>Anonym melden? <input name="anonymous" type="checkbox"></label><br />
+        <label>Reporter-ID (optional) <input name="reporterId" type="number"></label><br />
+        <button type="submit">Speichern</button>
+    </form>
+</section>

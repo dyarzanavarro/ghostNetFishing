@@ -1,0 +1,29 @@
+<section th:fragment="section" xmlns:th="http://www.thymeleaf.org" th:replace="layout :: section">
+    <h1>Offene Geisternetze</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Koordinaten</th>
+                <th>Größe</th>
+                <th>Status</th>
+                <th>Aktionen</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="n : ${nets}">
+                <td th:text="${n.id}"></td>
+                <td th:text="${n.latitude + ', ' + n.longitude}"></td>
+                <td th:text="${n.sizeEstimate}"></td>
+                <td th:text="${n.status}"></td>
+                <td>
+                    <a th:href="@{'/nets/' + ${n.id} + '/assign'}" th:if="${n.status.name() != 'GEBORGEN'}">Zuordnen</a>
+                    <form th:action="@{'/nets/' + ${n.id} + '/salvage'}" method="post" style="display:inline"
+                        th:if="${n.status.name() != 'GEBORGEN'}">
+                        <button type="submit">Als geborgen melden</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>

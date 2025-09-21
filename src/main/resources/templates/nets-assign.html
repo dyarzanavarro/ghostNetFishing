@@ -1,0 +1,8 @@
+<section th:fragment="section" xmlns:th="http://www.thymeleaf.org" th:replace="layout :: section">
+    <h1>Zuordnen (Netz #[[${netId}]])</h1>
+    <form th:action="@{'/nets/' + ${netId} + '/assign'}" method="post">
+        <label>Rescuer-ID <input name="rescuerId" type="number" required></label>
+        <button type="submit">Zuordnen</button>
+    </form>
+    <p>Tipp: leg bergende Personen per Seed an (unten) oder direkt in der DB.</p>
+</section>

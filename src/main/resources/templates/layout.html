@@ -1,0 +1,23 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Ghost Net</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+
+<body>
+    <nav>
+        <a th:href="@{/nets}">Netze</a> |
+        <a th:href="@{/nets/new}">Melden</a> |
+        <a th:href="@{/nets/map}">Karte</a>
+    </nav>
+    <main>
+        <div th:replace="~{::section}"></div>
+    </main>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</body>
+
+</html>
