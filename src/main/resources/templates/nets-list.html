@@ -8,13 +8,16 @@
 </head>
 
 <body>
-    <nav>
-        <a th:href="@{/nets}">Netze</a> |
-        <a th:href="@{/nets/new}">Melden</a> |
-        <a th:href="@{/nets/map}">Karte</a>
-    </nav>
+    <header>
+        <h2>GhostNet Global</h2>
+        <nav>
+            <a th:href="@{/nets}">Netze</a> |
+            <a th:href="@{/nets/new}">Melden</a> |
+            <a th:href="@{/nets/map}">Karte</a>
+        </nav>
+    </header>
+    <h1>Gemeldete Geisternetze</h1>
 
-    <h1>Offene Geisternetze</h1>
     <table>
         <thead>
             <tr>
@@ -22,6 +25,7 @@
                 <th>Koordinaten</th>
                 <th>Größe</th>
                 <th>Status</th>
+                <th>Bergende Person</th>
                 <th>Aktionen</th>
             </tr>
         </thead>
@@ -30,17 +34,66 @@
                 <td th:text="${n.id}">1</td>
                 <td th:text="${n.latitude + ', ' + n.longitude}">0,0</td>
                 <td th:text="${n.sizeEstimate}">Mittel</td>
-                <td th:text="${n.status}">GEMELDET</td>
+
+                <!-- Badge: generiert Klasse aus Status (GEMELDET -> .gemeldet, BERGUNG_BEVORSTEHEND -> .bergung-bevorstehend, etc.) -->
                 <td>
-                    <a th:href="@{'/nets/' + ${n.id} + '/assign'}" th:if="${n.status.name() != 'GEBORGEN'}">Zuordnen</a>
-                    <form th:action="@{'/nets/' + ${n.id} + '/salvage'}" method="post" style="display:inline"
-                        th:if="${n.status.name() != 'GEBORGEN'}">
-                        <button type="submit">Als geborgen melden</button>
+                    <span class="badge" th:text="${n.status}"
+                        th:classappend="${' ' + #strings.toLowerCase(n.status.name()).replace('_','-')}">
+                        GEMELDET
+                    </span>
+                </td>
+
+                <!-- Rescuer-Name oder — -->
+                <td th:text="${n.assignedRescuer != null ? n.assignedRescuer.name : '—'}">—</td>
+
+                <td class="inline">
+                    <!-- Zuordnen / ändern nur wenn nicht geborgen -->
+                    <a class="btn secondary" th:if="${n.status.name() != 'GEBORGEN'}"
+                        th:href="@{'/nets/' + ${n.id} + '/assign'}">
+                        Zuordnen
+                    </a>
+
+                    <!-- Als geborgen melden -->
+                    <form th:if="${n.status.name() != 'GEBORGEN'}" th:action="@{'/nets/' + ${n.id} + '/salvage'}"
+                        method="post" style="display:inline">
+                        <button type="submit" class="btn">Als geborgen melden</button>
                     </form>
                 </td>
             </tr>
         </tbody>
     </table>
+
+    <div th:if="${#lists.isEmpty(salvaged)}" class="alert">Noch keine geborgenen Netze.</div>
+
+    <h1>Geborgene Geisternetze</h1>
+
+    <table th:if="${!#lists.isEmpty(salvaged)}">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Koordinaten</th>
+                <th>Größe</th>
+                <th>Status</th>
+                <th>Bergende Person</th>
+                <th>Gemeldet am</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="n : ${salvaged}">
+                <td th:text="${n.id}">1</td>
+                <td th:text="${n.latitude + ', ' + n.longitude}">0,0</td>
+                <td th:text="${n.sizeEstimate}">Mittel</td>
+                <td>
+                    <span class="badge geborgen">GEBORGEN</span>
+                </td>
+                <td th:text="${n.assignedRescuer != null ? n.assignedRescuer.name : '—'}">—</td>
+                <td th:text="${#temporals.format(n.createdAt, 'yyyy-MM-dd HH:mm')}">2025-09-21 13:37</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+
+
 </body>
 
 </html>

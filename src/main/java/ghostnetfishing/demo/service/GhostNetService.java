@@ -48,5 +48,11 @@ public class GhostNetService {
     return g;
   }
 
-  public List<GhostNet> listOpen() { return nets.findOpen(); }
+ public List<GhostNet> listOpen() {
+  return nets.findByStatusNotOrderByCreatedAtDesc(GhostNetStatus.GEBORGEN);
+}
+
+public List<GhostNet> listSalvaged() {
+  return nets.findByStatusOrderByCreatedAtDesc(GhostNetStatus.GEBORGEN);
+}
 }

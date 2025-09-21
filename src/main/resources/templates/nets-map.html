@@ -9,11 +9,14 @@
 </head>
 
 <body>
-    <nav>
-        <a th:href="@{/nets}">Netze</a> |
-        <a th:href="@{/nets/new}">Melden</a> |
-        <a th:href="@{/nets/map}">Karte</a>
-    </nav>
+    <header>
+        <h2>GhostNet Global</h2>
+        <nav>
+            <a th:href="@{/nets}">Netze</a> |
+            <a th:href="@{/nets/new}">Melden</a> |
+            <a th:href="@{/nets/map}">Karte</a>
+        </nav>
+    </header>
 
     <h1>Karte – Offene Netze</h1>
     <div id="map" style="height: 480px;"></div>

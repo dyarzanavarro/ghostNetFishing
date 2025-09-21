@@ -20,6 +20,8 @@ public class GhostNetController {
   @GetMapping
   public String list(Model model) {
     model.addAttribute("nets", service.listOpen());
+      model.addAttribute("salvaged", service.listSalvaged());
+
     return "nets-list";
   }
 

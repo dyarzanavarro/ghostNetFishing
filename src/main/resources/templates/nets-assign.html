@@ -8,11 +8,14 @@
 </head>
 
 <body>
-    <nav>
-        <a th:href="@{/nets}">Netze</a> |
-        <a th:href="@{/nets/new}">Melden</a> |
-        <a th:href="@{/nets/map}">Karte</a>
-    </nav>
+    <header>
+        <h2>GhostNet Global</h2>
+        <nav>
+            <a th:href="@{/nets}">Netze</a> |
+            <a th:href="@{/nets/new}">Melden</a> |
+            <a th:href="@{/nets/map}">Karte</a>
+        </nav>
+    </header>
 
     <h1>Zuordnen (Netz <span th:text="${netId}">ID</span>)</h1>
     <form th:action="@{'/nets/' + ${netId} + '/assign'}" method="post">
