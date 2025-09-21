@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/nets")
+@RequiredArgsConstructor
 public class GhostNetController {
 
   private final GhostNetService service;
@@ -52,10 +53,9 @@ public class GhostNetController {
     return "redirect:/nets";
   }
 
-  @GetMapping("/map")
+   @GetMapping("/map")
   public String map(Model model) throws Exception {
-    String json = new ObjectMapper().writeValueAsString(service.listOpen());
-    model.addAttribute("netsJson", json);
+    model.addAttribute("netsJson", mapper.writeValueAsString(service.listOpen()));
     return "nets-map";
   }
 }
