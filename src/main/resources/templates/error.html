@@ -1,0 +1,16 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" th:href="@{/css/app.css}" />
+
+<head>
+    <meta charset="utf-8">
+    <title>Fehler</title>
+</head>
+
+<body>
+    <h1>Es ist ein Fehler aufgetreten</h1>
+    <pre th:text="${message}">Unerwarteter Fehler</pre>
+    <p><a th:href="@{/nets}">Zurück zur Übersicht</a></p>
+</body>
+
+</html>

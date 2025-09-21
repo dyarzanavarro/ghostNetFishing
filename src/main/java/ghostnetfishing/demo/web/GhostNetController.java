@@ -8,13 +8,14 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/nets")
-@RequiredArgsConstructor
 public class GhostNetController {
 
   private final GhostNetService service;
-  public GhostNetController(GhostNetService service) {
-    this.service = service;
-  }
+  private final ObjectMapper mapper;
+  public GhostNetController(GhostNetService service, ObjectMapper mapper) {
+  this.service = service;
+  this.mapper = mapper;
+}
 
   @GetMapping
   public String list(Model model) {
