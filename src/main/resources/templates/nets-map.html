@@ -1,6 +1,24 @@
-<section th:fragment="section" xmlns:th="http://www.thymeleaf.org" th:replace="layout :: section">
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Karte – Offene Netze</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+
+<body>
+    <nav>
+        <a th:href="@{/nets}">Netze</a> |
+        <a th:href="@{/nets/new}">Melden</a> |
+        <a th:href="@{/nets/map}">Karte</a>
+    </nav>
+
     <h1>Karte – Offene Netze</h1>
     <div id="map" style="height: 480px;"></div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script th:inline="javascript">
         /*<![CDATA[*/
         const data = JSON.parse(/*[[${netsJson}]]*/ '[]');
@@ -12,4 +30,6 @@
         });
         /*]]>*/
     </script>
-</section>
+</body>
+
+</html>

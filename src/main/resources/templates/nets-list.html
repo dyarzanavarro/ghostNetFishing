@@ -1,4 +1,19 @@
-<section th:fragment="section" xmlns:th="http://www.thymeleaf.org" th:replace="layout :: section">
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Offene Geisternetze</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}" />
+</head>
+
+<body>
+    <nav>
+        <a th:href="@{/nets}">Netze</a> |
+        <a th:href="@{/nets/new}">Melden</a> |
+        <a th:href="@{/nets/map}">Karte</a>
+    </nav>
+
     <h1>Offene Geisternetze</h1>
     <table>
         <thead>
@@ -12,10 +27,10 @@
         </thead>
         <tbody>
             <tr th:each="n : ${nets}">
-                <td th:text="${n.id}"></td>
-                <td th:text="${n.latitude + ', ' + n.longitude}"></td>
-                <td th:text="${n.sizeEstimate}"></td>
-                <td th:text="${n.status}"></td>
+                <td th:text="${n.id}">1</td>
+                <td th:text="${n.latitude + ', ' + n.longitude}">0,0</td>
+                <td th:text="${n.sizeEstimate}">Mittel</td>
+                <td th:text="${n.status}">GEMELDET</td>
                 <td>
                     <a th:href="@{'/nets/' + ${n.id} + '/assign'}" th:if="${n.status.name() != 'GEBORGEN'}">Zuordnen</a>
                     <form th:action="@{'/nets/' + ${n.id} + '/salvage'}" method="post" style="display:inline"
@@ -26,4 +41,6 @@
             </tr>
         </tbody>
     </table>
-</section>
+</body>
+
+</html>

@@ -1,12 +1,17 @@
 services:
   db:
-    image: mysql:8
+    image: mysql:8.4
     environment:
       MYSQL_DATABASE: ghostnet
       MYSQL_USER: ghostnet
       MYSQL_PASSWORD: ghostnet
       MYSQL_ROOT_PASSWORD: root
-    ports: ["3306:3306"]
-    command: ["--default-authentication-plugin=mysql_native_password","--character-set-server=utf8mb4","--collation-server=utf8mb4_unicode_ci"]
-    volumes: [ "db_data:/var/lib/mysql" ]
-volumes: { db_data: {} }
+    ports:
+      - "3307:3306"  
+    command:
+      - "--character-set-server=utf8mb4"
+      - "--collation-server=utf8mb4_unicode_ci"
+    volumes:
+      - db_data:/var/lib/mysql
+volumes:
+  db_data:

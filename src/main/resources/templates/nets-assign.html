@@ -1,8 +1,24 @@
-<section th:fragment="section" xmlns:th="http://www.thymeleaf.org" th:replace="layout :: section">
-    <h1>Zuordnen (Netz #[[${netId}]])</h1>
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Netz zuordnen</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}" />
+</head>
+
+<body>
+    <nav>
+        <a th:href="@{/nets}">Netze</a> |
+        <a th:href="@{/nets/new}">Melden</a> |
+        <a th:href="@{/nets/map}">Karte</a>
+    </nav>
+
+    <h1>Zuordnen (Netz <span th:text="${netId}">ID</span>)</h1>
     <form th:action="@{'/nets/' + ${netId} + '/assign'}" method="post">
         <label>Rescuer-ID <input name="rescuerId" type="number" required></label>
         <button type="submit">Zuordnen</button>
     </form>
-    <p>Tipp: leg bergende Personen per Seed an (unten) oder direkt in der DB.</p>
-</section>
+</body>
+
+</html>

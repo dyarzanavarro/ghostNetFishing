@@ -1,4 +1,19 @@
-<section th:fragment="section" xmlns:th="http://www.thymeleaf.org" th:replace="layout :: section">
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Geisternetz melden</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}" />
+</head>
+
+<body>
+    <nav>
+        <a th:href="@{/nets}">Netze</a> |
+        <a th:href="@{/nets/new}">Melden</a> |
+        <a th:href="@{/nets/map}">Karte</a>
+    </nav>
+
     <h1>Geisternetz melden</h1>
     <form th:action="@{/nets}" method="post">
         <label>Latitude <input name="latitude" type="number" step="0.000001" required></label><br />
@@ -8,4 +23,6 @@
         <label>Reporter-ID (optional) <input name="reporterId" type="number"></label><br />
         <button type="submit">Speichern</button>
     </form>
-</section>
+</body>
+
+</html>
