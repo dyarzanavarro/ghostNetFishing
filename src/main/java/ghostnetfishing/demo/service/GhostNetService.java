@@ -6,6 +6,8 @@ import ghostnetfishing.demo.domain.Person;
 import ghostnetfishing.demo.repo.GhostNetRepository;
 import ghostnetfishing.demo.repo.PersonRepository;
 import org.springframework.stereotype.Service;
+import ghostnetfishing.demo.web.dto.NetMapDto;
+import java.util.stream.Collectors;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -51,6 +53,26 @@ public class GhostNetService {
     g.setStatus(GhostNetStatus.GEBORGEN);
     return g;
   }
+
+@Transactional(readOnly = true)
+public java.util.List<NetMapDto> listForMap() {
+  return nets.findByStatusNotOrderByCreatedAtDesc(ghostnetfishing.demo.domain.GhostNetStatus.GEBORGEN)
+      .stream()
+      .map(g -> new NetMapDto(
+          g.getId(),
+          g.getLatitude(),
+          g.getLongitude(),
+          g.getSizeEstimate(),
+          g.getStatus().name(),
+          g.getReportedBy() != null ? g.getReportedBy().getName() : null,
+          g.getAssignedRescuer() != null ? g.getAssignedRescuer().getName() : null,
+          g.getCreatedAt()
+      ))
+      .collect(Collectors.toList());
+}
+
+
+
 
   public List<GhostNet> listOpen() {
     return nets.findByStatusNotOrderByCreatedAtDesc(GhostNetStatus.GEBORGEN);
