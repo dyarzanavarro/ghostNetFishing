@@ -58,7 +58,22 @@
                         method="post" style="display:inline">
                         <button type="submit" class="btn">Als geborgen melden</button>
                     </form>
+
+                    <!-- Als verschollen melden (erfordert Reporter mit Telefonnummer) -->
+                    <form th:if="${n.status.name() != 'GEBORGEN'}" th:action="@{'/nets/' + ${n.id} + '/missing'}"
+                        method="post" class="inline" style="gap:8px">
+                        <select name="reporterId" required>
+                            <option value="" disabled selected>Reporter wählen</option>
+                            <option th:each="p : ${reporters}" th:value="${p.id}"
+                                th:text="${p.name + (p.phone != null ? ' (' + p.phone + ')' : '')}">
+                                Person
+                            </option>
+                        </select>
+                        <button type="submit" class="btn danger">Als verschollen melden</button>
+                    </form>
+
                 </td>
+
             </tr>
         </tbody>
     </table>

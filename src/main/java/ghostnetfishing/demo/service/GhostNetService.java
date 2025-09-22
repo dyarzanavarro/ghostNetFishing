@@ -1,9 +1,13 @@
 package ghostnetfishing.demo.service;
 
-import ghostnetfishing.demo.domain.*;
-import ghostnetfishing.demo.repo.*;
+import ghostnetfishing.demo.domain.GhostNet;
+import ghostnetfishing.demo.domain.GhostNetStatus;
+import ghostnetfishing.demo.domain.Person;
+import ghostnetfishing.demo.repo.GhostNetRepository;
+import ghostnetfishing.demo.repo.PersonRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @Service
@@ -38,7 +42,7 @@ public class GhostNetService {
     if (!p.isRescuer()) throw new IllegalArgumentException("Person ist keine bergende Person");
     g.setAssignedRescuer(p);
     g.setStatus(GhostNetStatus.BERGUNG_BEVORSTEHEND);
-    return g;
+    return g; // Dirty Checking speichert beim Flush
   }
 
   @Transactional
@@ -48,11 +52,33 @@ public class GhostNetService {
     return g;
   }
 
- public List<GhostNet> listOpen() {
-  return nets.findByStatusNotOrderByCreatedAtDesc(GhostNetStatus.GEBORGEN);
-}
+  public List<GhostNet> listOpen() {
+    return nets.findByStatusNotOrderByCreatedAtDesc(GhostNetStatus.GEBORGEN);
+  }
 
-public List<GhostNet> listSalvaged() {
-  return nets.findByStatusOrderByCreatedAtDesc(GhostNetStatus.GEBORGEN);
-}
+  public List<GhostNet> listSalvaged() {
+    return nets.findByStatusOrderByCreatedAtDesc(GhostNetStatus.GEBORGEN);
+  }
+
+  @Transactional
+  public void markMissing(long id, long reporterId) {
+    GhostNet g = nets.findById(id)
+        .orElseThrow(() -> new IllegalArgumentException("Geisternetz nicht gefunden: " + id));
+
+    if (g.getStatus() == GhostNetStatus.GEBORGEN) {
+      throw new IllegalStateException("Geborgene Netze können nicht als verschollen gemeldet werden.");
+    }
+    if (g.getStatus() == GhostNetStatus.VERSCHOLLEN) {
+      return; // idempotent
+    }
+
+    Person reporter = persons.findById(reporterId)
+        .orElseThrow(() -> new IllegalArgumentException("Meldende Person nicht gefunden: " + reporterId));
+    if (reporter.getPhone() == null || reporter.getPhone().isBlank()) {
+      throw new IllegalArgumentException("Verschollen-Meldung erfordert eine Person mit Telefonnummer (nicht anonym).");
+    }
+
+    g.setStatus(GhostNetStatus.VERSCHOLLEN);
+    
+  }
 }

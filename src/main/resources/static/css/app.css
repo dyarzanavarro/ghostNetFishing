@@ -122,6 +122,7 @@ h2,
 h3 {
     line-height: 1.2;
     margin: 0 0 var(--space-2);
+    padding-top: 2rem;
 }
 
 h1 {
