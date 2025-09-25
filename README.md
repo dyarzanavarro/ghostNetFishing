@@ -26,16 +26,20 @@ Prototypische Webanwendung zur Meldung, Disposition und Bergung von Geisternetze
 ### 1.Datenbank starten
 ```bash
 docker compose up -d
+```
 
 ### 2. Anwendung bauen & starten
-# Build
+```bash
 ./gradlew clean build
+```
 
 # Lokal starten
+```bash
 ./gradlew bootRun
-
+```
 
 ### 4. Tests
-
 Services (Unit-Tests):
+```bash
 ./gradlew test --tests ghostnetfishing.demo.service.GhostNetServiceTest
+```
