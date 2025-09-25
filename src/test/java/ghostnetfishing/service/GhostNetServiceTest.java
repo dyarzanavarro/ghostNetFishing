@@ -32,10 +32,11 @@ public class GhostNetServiceTest {
   @Test
   @DisplayName("report(): anonym -> Status GEMELDET, kein Reporter")
   void report_anonymous() {
-    GhostNet saved = new GhostNet();
-    // on Save das selbe Netz zurückgeben
-    saved.setId(1L);
-    willReturn(saved).given(nets).save(ArgumentMatchers.any(GhostNet.class));
+    given(nets.save(any(GhostNet.class))).willAnswer(inv -> {
+  GhostNet g = inv.getArgument(0);
+  g.setId(1L);
+  return g;
+});
 
     GhostNet res = service.report(10.0, 20.0, "Mittel", null, true);
 
@@ -50,18 +51,22 @@ public class GhostNetServiceTest {
   @DisplayName("report(): mit Reporter -> Referenz gesetzt, Status GEMELDET")
   void report_withReporter() {
     Person reporter = new Person();
-    reporter.setId(7L);
-    reporter.setName("Alice");
-    willReturn(Optional.of(reporter)).given(persons).findById(7L);
+  reporter.setId(7L);
+  reporter.setName("Alice");
+  given(persons.findById(7L)).willReturn(Optional.of(reporter));
 
-    GhostNet saved = new GhostNet(); saved.setId(2L);
-    willReturn(saved).given(nets).save(ArgumentMatchers.any(GhostNet.class));
+  given(nets.save(any(GhostNet.class))).willAnswer(inv -> {
+    GhostNet g = inv.getArgument(0);
+    g.setId(2L);
+    return g;
+  });
 
-    GhostNet res = service.report(1,2,"Klein", 7L, false);
+  GhostNet res = service.report(1, 2, "Klein", 7L, false);
 
-    assertThat(res.getStatus()).isEqualTo(GhostNetStatus.GEMELDET);
-    assertThat(res.getReportedBy()).isEqualTo(reporter);
-  }
+  assertThat(res.getStatus()).isEqualTo(GhostNetStatus.GEMELDET);
+  assertThat(res.getReportedBy()).isNotNull();
+  assertThat(res.getReportedBy().getId()).isEqualTo(7L);
+}
 
    @Test
   @DisplayName("assignRescuer(): Retter gesetzt, Status BERGUNG_BEVORSTEHEND")
